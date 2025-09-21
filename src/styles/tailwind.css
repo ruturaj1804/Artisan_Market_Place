@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core System Colors */
+    --color-background: #FEFCF8; /* warm off-white */
+    --color-foreground: #2C1810; /* deep brown */
+    --color-border: #E8DDD4; /* warm neutral */
+    --color-input: #F7F3ED; /* subtle cream */
+    --color-ring: #C17B5A; /* terracotta warmth */
+    
+    /* Card Colors */
+    --color-card: #F7F3ED; /* subtle cream */
+    --color-card-foreground: #2C1810; /* deep brown */
+    
+    /* Popover Colors */
+    --color-popover: #FEFCF8; /* warm off-white */
+    --color-popover-foreground: #2C1810; /* deep brown */
+    
+    /* Muted Colors */
+    --color-muted: #F7F3ED; /* subtle cream */
+    --color-muted-foreground: #6B4E3D; /* medium brown */
+    
+    /* Primary Colors */
+    --color-primary: #C17B5A; /* terracotta warmth */
+    --color-primary-foreground: #FEFCF8; /* warm off-white */
+    
+    /* Secondary Colors */
+    --color-secondary: #8B4513; /* rich earth brown */
+    --color-secondary-foreground: #FEFCF8; /* warm off-white */
+    
+    /* Accent Colors */
+    --color-accent: #D4A574; /* golden beige */
+    --color-accent-foreground: #2C1810; /* deep brown */
+    
+    /* Success Colors */
+    --color-success: #7A8450; /* sage green */
+    --color-success-foreground: #FEFCF8; /* warm off-white */
+    
+    /* Warning Colors */
+    --color-warning: #E6A532; /* turmeric yellow */
+    --color-warning-foreground: #2C1810; /* deep brown */
+    
+    /* Error/Destructive Colors */
+    --color-error: #B85450; /* muted red-brown */
+    --color-error-foreground: #FEFCF8; /* warm off-white */
+    --color-destructive: #B85450; /* muted red-brown */
+    --color-destructive-foreground: #FEFCF8; /* warm off-white */
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .font-heading {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .font-caption {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  
+  .font-data {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
