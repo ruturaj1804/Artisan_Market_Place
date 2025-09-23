@@ -8,6 +8,10 @@ import Login from './pages/login';
 import ArtisanUploadForm from './pages/artisan-upload-form';
 import HomepageLanding from './pages/homepage-landing';
 import Register from './pages/register';
+import DummyLogin from "pages/login/components/DummyLogin";
+
+// testing dummy page on versal 
+
 
 const Routes = () => {
   return (
@@ -18,7 +22,9 @@ const Routes = () => {
         {/* Define your route here */}
         <Route path="/" element={<ArtisanUploadForm />} />
         <Route path="/product-catalog" element={<ProductCatalog />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<DummyLogin />} />
+
         <Route path="/artisan-upload-form" element={<ArtisanUploadForm />} />
         <Route path="/homepage-landing" element={<HomepageLanding />} />
         <Route path="/register" element={<Register />} />
