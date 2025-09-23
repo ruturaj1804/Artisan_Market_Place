@@ -1,23 +1,53 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
-import Input from '../../../components/ui/Input';
-import Select from '../../../components/ui/Select';
-import { Checkbox } from '../../../components/ui/Checkbox';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Icon from "../../../components/AppIcon";
+import Button from "../../../components/ui/Button";
+import Input from "../../../components/ui/Input";
+import Select from "../../../components/ui/Select";
+import { Checkbox } from "../../../components/ui/Checkbox";
+import { useNavigate } from "react-router-dom";
+
+// db config file 
+import { auth } from "dbConfig/config";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const RegistrationForm = ({ onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    userType: '',
-    state: '',
-    craftSpecialization: '',
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    userType: "",
+    state: "",
+    craftSpecialization: "",
     agreeToTerms: false,
-    subscribeNewsletter: false
+    subscribeNewsletter: false,
   });
+
+  const isClick = async () => {
+    if (formData.password != "" && formData.email != "") {
+      try {
+        const res = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+        navigate("/home"); // redirect to Dashboard
+
+      } catch (error) {
+        console.log("Error Duplicate User");
+        
+      }    
+      console.log(res);
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        userType: "",
+        state: "",
+        craftSpecialization: "",
+        agreeToTerms: false,
+        subscribeNewsletter: false,
+      });
+    }
+  };
 
   const [errors, setErrors] = useState({});
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -25,68 +55,68 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const userTypeOptions = [
-    { 
-      value: 'artisan', 
-      label: 'Artisan', 
-      description: 'I create and sell handcrafted products' 
+    {
+      value: "artisan",
+      label: "Artisan",
+      description: "I create and sell handcrafted products",
     },
-    { 
-      value: 'buyer', 
-      label: 'Buyer', 
-      description: 'I want to discover and purchase authentic crafts' 
-    }
+    {
+      value: "buyer",
+      label: "Buyer",
+      description: "I want to discover and purchase authentic crafts",
+    },
   ];
 
   const stateOptions = [
-    { value: 'andhra-pradesh', label: 'Andhra Pradesh' },
-    { value: 'arunachal-pradesh', label: 'Arunachal Pradesh' },
-    { value: 'assam', label: 'Assam' },
-    { value: 'bihar', label: 'Bihar' },
-    { value: 'chhattisgarh', label: 'Chhattisgarh' },
-    { value: 'goa', label: 'Goa' },
-    { value: 'gujarat', label: 'Gujarat' },
-    { value: 'haryana', label: 'Haryana' },
-    { value: 'himachal-pradesh', label: 'Himachal Pradesh' },
-    { value: 'jharkhand', label: 'Jharkhand' },
-    { value: 'karnataka', label: 'Karnataka' },
-    { value: 'kerala', label: 'Kerala' },
-    { value: 'madhya-pradesh', label: 'Madhya Pradesh' },
-    { value: 'maharashtra', label: 'Maharashtra' },
-    { value: 'manipur', label: 'Manipur' },
-    { value: 'meghalaya', label: 'Meghalaya' },
-    { value: 'mizoram', label: 'Mizoram' },
-    { value: 'nagaland', label: 'Nagaland' },
-    { value: 'odisha', label: 'Odisha' },
-    { value: 'punjab', label: 'Punjab' },
-    { value: 'rajasthan', label: 'Rajasthan' },
-    { value: 'sikkim', label: 'Sikkim' },
-    { value: 'tamil-nadu', label: 'Tamil Nadu' },
-    { value: 'telangana', label: 'Telangana' },
-    { value: 'tripura', label: 'Tripura' },
-    { value: 'uttar-pradesh', label: 'Uttar Pradesh' },
-    { value: 'uttarakhand', label: 'Uttarakhand' },
-    { value: 'west-bengal', label: 'West Bengal' },
-    { value: 'delhi', label: 'Delhi' },
-    { value: 'jammu-kashmir', label: 'Jammu & Kashmir' },
-    { value: 'ladakh', label: 'Ladakh' }
+    { value: "andhra-pradesh", label: "Andhra Pradesh" },
+    { value: "arunachal-pradesh", label: "Arunachal Pradesh" },
+    { value: "assam", label: "Assam" },
+    { value: "bihar", label: "Bihar" },
+    { value: "chhattisgarh", label: "Chhattisgarh" },
+    { value: "goa", label: "Goa" },
+    { value: "gujarat", label: "Gujarat" },
+    { value: "haryana", label: "Haryana" },
+    { value: "himachal-pradesh", label: "Himachal Pradesh" },
+    { value: "jharkhand", label: "Jharkhand" },
+    { value: "karnataka", label: "Karnataka" },
+    { value: "kerala", label: "Kerala" },
+    { value: "madhya-pradesh", label: "Madhya Pradesh" },
+    { value: "maharashtra", label: "Maharashtra" },
+    { value: "manipur", label: "Manipur" },
+    { value: "meghalaya", label: "Meghalaya" },
+    { value: "mizoram", label: "Mizoram" },
+    { value: "nagaland", label: "Nagaland" },
+    { value: "odisha", label: "Odisha" },
+    { value: "punjab", label: "Punjab" },
+    { value: "rajasthan", label: "Rajasthan" },
+    { value: "sikkim", label: "Sikkim" },
+    { value: "tamil-nadu", label: "Tamil Nadu" },
+    { value: "telangana", label: "Telangana" },
+    { value: "tripura", label: "Tripura" },
+    { value: "uttar-pradesh", label: "Uttar Pradesh" },
+    { value: "uttarakhand", label: "Uttarakhand" },
+    { value: "west-bengal", label: "West Bengal" },
+    { value: "delhi", label: "Delhi" },
+    { value: "jammu-kashmir", label: "Jammu & Kashmir" },
+    { value: "ladakh", label: "Ladakh" },
   ];
 
   const craftOptions = [
-    { value: 'warli-painting', label: 'Warli Painting' },
-    { value: 'madhubani-art', label: 'Madhubani Art' },
-    { value: 'pashmina-weaving', label: 'Pashmina Weaving' },
-    { value: 'channapatna-toys', label: 'Channapatna Toys' },
-    { value: 'pottery-ceramics', label: 'Pottery & Ceramics' },
-    { value: 'handloom-textiles', label: 'Handloom Textiles' },
-    { value: 'jewelry-making', label: 'Jewelry Making' },
-    { value: 'wood-carving', label: 'Wood Carving' },
-    { value: 'metal-crafts', label: 'Metal Crafts' },
-    { value: 'leather-work', label: 'Leather Work' },
-    { value: 'bamboo-crafts', label: 'Bamboo Crafts' },
-    { value: 'stone-carving', label: 'Stone Carving' },
-    { value: 'embroidery', label: 'Embroidery' },
-    { value: 'block-printing', label: 'Block Printing' },
-    { value: 'other', label: 'Other Traditional Craft' }
+    { value: "warli-painting", label: "Warli Painting" },
+    { value: "madhubani-art", label: "Madhubani Art" },
+    { value: "pashmina-weaving", label: "Pashmina Weaving" },
+    { value: "channapatna-toys", label: "Channapatna Toys" },
+    { value: "pottery-ceramics", label: "Pottery & Ceramics" },
+    { value: "handloom-textiles", label: "Handloom Textiles" },
+    { value: "jewelry-making", label: "Jewelry Making" },
+    { value: "wood-carving", label: "Wood Carving" },
+    { value: "metal-crafts", label: "Metal Crafts" },
+    { value: "leather-work", label: "Leather Work" },
+    { value: "bamboo-crafts", label: "Bamboo Crafts" },
+    { value: "stone-carving", label: "Stone Carving" },
+    { value: "embroidery", label: "Embroidery" },
+    { value: "block-printing", label: "Block Printing" },
+    { value: "other", label: "Other Traditional Craft" },
   ];
 
   const calculatePasswordStrength = (password) => {
@@ -99,15 +129,16 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
   };
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    // console.log(formData)
+
     // Clear error when user starts typing
     if (errors?.[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
 
     // Calculate password strength
-    if (field === 'password') {
+    if (field === "password") {
       setPasswordStrength(calculatePasswordStrength(value));
     }
   };
@@ -116,42 +147,43 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
     const newErrors = {};
 
     if (!formData?.fullName?.trim()) {
-      newErrors.fullName = 'Full name is required';
+      newErrors.fullName = "Full name is required";
     }
 
     if (!formData?.email?.trim()) {
-      newErrors.email = 'Email address is required';
+      newErrors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/?.test(formData?.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
 
     if (!formData?.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData?.password?.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters long';
+      newErrors.password = "Password must be at least 8 characters long";
     }
 
     if (!formData?.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData?.password !== formData?.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     if (!formData?.userType) {
-      newErrors.userType = 'Please select your user type';
+      newErrors.userType = "Please select your user type";
     }
 
-    if (formData?.userType === 'artisan') {
+    if (formData?.userType === "artisan") {
       if (!formData?.state) {
-        newErrors.state = 'Please select your state';
+        newErrors.state = "Please select your state";
       }
       if (!formData?.craftSpecialization) {
-        newErrors.craftSpecialization = 'Please select your craft specialization';
+        newErrors.craftSpecialization =
+          "Please select your craft specialization";
       }
     }
 
     if (!formData?.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must agree to the terms and conditions';
+      newErrors.agreeToTerms = "You must agree to the terms and conditions";
     }
 
     setErrors(newErrors);
@@ -166,17 +198,17 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
   };
 
   const getPasswordStrengthColor = () => {
-    if (passwordStrength < 25) return 'bg-error';
-    if (passwordStrength < 50) return 'bg-warning';
-    if (passwordStrength < 75) return 'bg-accent';
-    return 'bg-success';
+    if (passwordStrength < 25) return "bg-error";
+    if (passwordStrength < 50) return "bg-warning";
+    if (passwordStrength < 75) return "bg-accent";
+    return "bg-success";
   };
 
   const getPasswordStrengthText = () => {
-    if (passwordStrength < 25) return 'Weak';
-    if (passwordStrength < 50) return 'Fair';
-    if (passwordStrength < 75) return 'Good';
-    return 'Strong';
+    if (passwordStrength < 25) return "Weak";
+    if (passwordStrength < 50) return "Fair";
+    if (passwordStrength < 75) return "Good";
+    return "Strong";
   };
 
   return (
@@ -186,13 +218,13 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
         <h3 className="font-heading font-semibold text-lg text-foreground">
           Basic Information
         </h3>
-        
+
         <Input
           label="Full Name"
           type="text"
           placeholder="Enter your full name"
           value={formData?.fullName}
-          onChange={(e) => handleInputChange('fullName', e?.target?.value)}
+          onChange={(e) => handleInputChange("fullName", e?.target?.value)}
           error={errors?.fullName}
           required
         />
@@ -202,7 +234,7 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
           type="email"
           placeholder="Enter your email address"
           value={formData?.email}
-          onChange={(e) => handleInputChange('email', e?.target?.value)}
+          onChange={(e) => handleInputChange("email", e?.target?.value)}
           error={errors?.email}
           required
         />
@@ -214,7 +246,7 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
               type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
               value={formData?.password}
-              onChange={(e) => handleInputChange('password', e?.target?.value)}
+              onChange={(e) => handleInputChange("password", e?.target?.value)}
               error={errors?.password}
               required
             />
@@ -226,20 +258,27 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
               <Icon name={showPassword ? "EyeOff" : "Eye"} size={16} />
             </button>
           </div>
-          
+
           {formData?.password && (
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">Password strength:</span>
-                <span className={`font-medium ${
-                  passwordStrength < 50 ? 'text-error' : 
-                  passwordStrength < 75 ? 'text-warning' : 'text-success'
-                }`}>
+                <span className="text-muted-foreground">
+                  Password strength:
+                </span>
+                <span
+                  className={`font-medium ${
+                    passwordStrength < 50
+                      ? "text-error"
+                      : passwordStrength < 75
+                      ? "text-warning"
+                      : "text-success"
+                  }`}
+                >
                   {getPasswordStrengthText()}
                 </span>
               </div>
               <div className="w-full bg-muted rounded-full h-1.5">
-                <div 
+                <div
                   className={`h-1.5 rounded-full transition-all duration-300 ${getPasswordStrengthColor()}`}
                   style={{ width: `${passwordStrength}%` }}
                 />
@@ -254,7 +293,9 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm your password"
             value={formData?.confirmPassword}
-            onChange={(e) => handleInputChange('confirmPassword', e?.target?.value)}
+            onChange={(e) =>
+              handleInputChange("confirmPassword", e?.target?.value)
+            }
             error={errors?.confirmPassword}
             required
           />
@@ -272,31 +313,31 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
         <h3 className="font-heading font-semibold text-lg text-foreground">
           Account Type
         </h3>
-        
+
         <Select
           label="I am a..."
           placeholder="Select your account type"
           options={userTypeOptions}
           value={formData?.userType}
-          onChange={(value) => handleInputChange('userType', value)}
+          onChange={(value) => handleInputChange("userType", value)}
           error={errors?.userType}
           required
         />
       </div>
       {/* Artisan-specific fields */}
-      {formData?.userType === 'artisan' && (
+      {formData?.userType === "artisan" && (
         <div className="space-y-4 p-4 bg-accent/10 rounded-lg border border-accent/20">
           <h3 className="font-heading font-semibold text-lg text-foreground flex items-center space-x-2">
             <Icon name="Palette" size={20} className="text-primary" />
             <span>Artisan Details</span>
           </h3>
-          
+
           <Select
             label="State/Region"
             placeholder="Select your state"
             options={stateOptions}
             value={formData?.state}
-            onChange={(value) => handleInputChange('state', value)}
+            onChange={(value) => handleInputChange("state", value)}
             error={errors?.state}
             searchable
             required
@@ -307,7 +348,9 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
             placeholder="Select your main craft type"
             options={craftOptions}
             value={formData?.craftSpecialization}
-            onChange={(value) => handleInputChange('craftSpecialization', value)}
+            onChange={(value) =>
+              handleInputChange("craftSpecialization", value)
+            }
             error={errors?.craftSpecialization}
             searchable
             required
@@ -319,7 +362,9 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
         <Checkbox
           label="I agree to the Terms of Service and Privacy Policy"
           checked={formData?.agreeToTerms}
-          onChange={(e) => handleInputChange('agreeToTerms', e?.target?.checked)}
+          onChange={(e) =>
+            handleInputChange("agreeToTerms", e?.target?.checked)
+          }
           error={errors?.agreeToTerms}
           required
         />
@@ -328,7 +373,9 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
           label="Subscribe to newsletter for artisan tips and marketplace updates"
           description="Get weekly insights about traditional crafts and marketplace trends"
           checked={formData?.subscribeNewsletter}
-          onChange={(e) => handleInputChange('subscribeNewsletter', e?.target?.checked)}
+          onChange={(e) =>
+            handleInputChange("subscribeNewsletter", e?.target?.checked)
+          }
         />
       </div>
       {/* Submit Button */}
@@ -338,6 +385,7 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
         size="lg"
         fullWidth
         loading={isLoading}
+        onClick={isClick}
         iconName="UserPlus"
         iconPosition="left"
         className="mt-8"
@@ -347,9 +395,9 @@ const RegistrationForm = ({ onSubmit, isLoading }) => {
       {/* Login Link */}
       <div className="text-center pt-4 border-t border-border">
         <p className="text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <Link 
-            to="/login" 
+          Already have an account?{" "}
+          <Link
+            to="/login"
             className="font-medium text-primary hover:text-primary/80 transition-colors"
           >
             Sign in here

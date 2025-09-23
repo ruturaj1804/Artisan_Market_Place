@@ -5,6 +5,12 @@ import Input from '../../../components/ui/Input';
 import { Checkbox } from '../../../components/ui/Checkbox';
 import Icon from '../../../components/AppIcon';
 
+// db config 
+import { auth } from "dbConfig/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,6 +20,23 @@ const LoginForm = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+
+  const isClick = async ()=>{
+    if (formData.email != '' && formData.password != '') {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        navigate('/homepage-landing');       
+      } catch (error) {
+        console.log("some error ocuur");
+        setErrors({
+         submit: `Invalid User`
+       });
+        
+      }
+    }
+    
+  }
 
   // Mock credentials for different user types
   const mockCredentials = {
@@ -28,6 +51,7 @@ const LoginForm = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    console.log(formData)
     
     // Clear error when user starts typing
     if (errors?.[name]) {
@@ -72,9 +96,9 @@ const LoginForm = () => {
         localStorage.setItem('userEmail', formData?.email);
         navigate('/homepage-landing');
       } else {
-        setErrors({
-          submit: `Invalid credentials. Try: ${mockCredentials?.artisan?.email} / ${mockCredentials?.artisan?.password} or ${mockCredentials?.buyer?.email} / ${mockCredentials?.buyer?.password}`
-        });
+        console.log("erro from another");
+        
+       
       }
       
       setIsLoading(false);
@@ -171,6 +195,7 @@ const LoginForm = () => {
             size="lg"
             fullWidth
             loading={isLoading}
+            onClick = {isClick}
             iconName="LogIn"
             iconPosition="left"
           >
